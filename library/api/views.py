@@ -1,3 +1,20 @@
-from django.shortcuts import render
+from rest_framework.response import Response
+from rest_framework.viewsets import ModelViewSet
+from api.serializers import BookSerializer, AuthorSerializer, SubscriberSerializer
+from api.models import Author, Book, Subscriber
 
-# Create your views here.
+
+
+class AuthorViewSet(ModelViewSet):
+    queryset = Author.objects.all()
+    serializer_class = AuthorSerializer
+
+
+class BookViewSet(ModelViewSet):
+    queryset = Book.objects.all()
+    serializer_class = BookSerializer
+
+
+class SubscriberView(ModelViewSet):
+    queryset = Subscriber.objects.all()
+    serializer_class = SubscriberSerializer

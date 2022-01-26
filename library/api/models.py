@@ -17,7 +17,7 @@ class Book(models.Model):
     publish_date = models.DateTimeField(null=False, blank=False)
 
     
-class Subsciber(models.Model):
+class Subscriber(models.Model):
     first_name = models.CharField(max_length=255, null=False, blank=False)
     mid_name = models.CharField(max_length=255, null=False, blank=False)
     last_name = models.CharField(max_length=255, null=False, blank=False)
