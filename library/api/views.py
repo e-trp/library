@@ -15,6 +15,6 @@ class BookViewSet(ModelViewSet):
     serializer_class = BookSerializer
 
 
-class SubscriberView(ModelViewSet):
+class SubscriberViewSet(ModelViewSet):
     queryset = Subscriber.objects.all()
     serializer_class = SubscriberSerializer

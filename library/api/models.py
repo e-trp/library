@@ -12,7 +12,7 @@ class Author(models.Model):
 
 class Book(models.Model):
     name = models.CharField(max_length=255, null=False, blank=False)
-    author = models.ForeignKey(Author, null=False, blank=False)
+    author = models.ForeignKey(Author, null=True, blank=False, on_delete=models.SET_NULL)
     language = models.CharField(max_length=50, null=False, blank=False)
     publish_date = models.DateTimeField(null=False, blank=False)
 
