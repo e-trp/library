@@ -7,4 +7,3 @@ router.register(r'authors', AuthorViewSet)
 router.register(r'books', BookViewSet)
 router.register(r'subscribers', SubscriberViewSet)
 urlpatterns = router.urls
-

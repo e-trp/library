@@ -9,6 +9,8 @@ class Author(models.Model):
     mid_name = models.CharField(max_length=255, null=False, blank=False)
     last_name = models.CharField(max_length=255, null=False, blank=False)
 
+    def __str__(self):
+        return ' '.join([self.first_name, self.mid_name, self.last_name])
 
 class Book(models.Model):
     name = models.CharField(max_length=255, null=False, blank=False)
@@ -16,9 +18,14 @@ class Book(models.Model):
     language = models.CharField(max_length=50, null=False, blank=False)
     publish_date = models.DateTimeField(null=False, blank=False)
 
+    def __str__(self):
+        return self.name
     
 class Subscriber(models.Model):
     first_name = models.CharField(max_length=255, null=False, blank=False)
     mid_name = models.CharField(max_length=255, null=False, blank=False)
     last_name = models.CharField(max_length=255, null=False, blank=False)
     email = models.EmailField(max_length=255, null=False, blank=False)
+
+    def __str__(self):
+        return ' '.join([self.first_name, self.mid_name, self.last_name])
