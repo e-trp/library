@@ -4,6 +4,7 @@ from api.models import Author, Book, Subscriber
 from rest_framework.permissions import IsAdminUser
 from api.permissions import LibraryPermission
 from api.tasks import send_mail_to_subs
+from django_filters.rest_framework import DjangoFilterBackend
 
 
 
@@ -17,6 +18,8 @@ class BookViewSet(ModelViewSet):
     permission_classes = [LibraryPermission | IsAdminUser]
     queryset = Book.objects.all()
     serializer_class = BookSerializer
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['name', 'language', 'publish_date']
 
     def perform_create(self, serializer):
         super().perform_create(serializer)

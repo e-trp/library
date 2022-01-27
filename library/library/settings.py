@@ -38,7 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-    'api'
+    'django_filters',
+    'api',
 ]
 
 MIDDLEWARE = [
@@ -152,3 +153,10 @@ EMAIL_HOST_USER = ''
 EMAIL_HOST_PASSWORD = ''
 EMAIL_USE_TLS = False
 DEFAULT_FROM_EMAIL = 'Librarian <no-reply@library.com>'
+
+# rest settings
+REST_FRAMEWORK = {
+    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend']
+}
+
+FILTERS_DEFAULT_LOOKUP_EXPR = 'icontains'
