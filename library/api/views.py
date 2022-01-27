@@ -20,9 +20,7 @@ class BookViewSet(ModelViewSet):
 
     def perform_create(self, serializer):
         super().perform_create(serializer)
-        print('reform create')
-        send_mail_to_subs.delay(None)
-
+        send_mail_to_subs.delay(serializer.instance.id)
 
 
 class SubscriberViewSet(ModelViewSet):

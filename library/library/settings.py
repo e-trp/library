@@ -150,5 +150,5 @@ EMAIL_HOST = 'localhost'
 EMAIL_PORT = 25
 EMAIL_HOST_USER = ''
 EMAIL_HOST_PASSWORD = ''
-EMAIL_USE_TLS = True
-DEFAULT_FROM_EMAIL = 'robot <no-reply@library.com>'
+EMAIL_USE_TLS = False
+DEFAULT_FROM_EMAIL = 'Librarian <no-reply@library.com>'
