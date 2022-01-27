@@ -1,24 +1,32 @@
-from rest_framework.permissions import BasePermission, SAFE_METHODS
-from api.models import Book
+from rest_framework.permissions import SAFE_METHODS, BasePermission
 import datetime
 
-class LibraryPermission(BasePermission):
+
+class AdminPermission(BasePermission):
 
     def has_object_permission(self, request, view, obj):
+        return bool(request.user and request.user.is_staff)
 
-        if bool(request.user and request.user.is_staff):
-            return True
-            
-        elif isinstance(obj, Book):
-            curr_year = datetime.date.today().year
-            if (curr_year - obj.publish_date.date().year) >= 1:
-                return False
+    def has_permission(self, request, view):
+        return bool(request.user and request.user.is_staff)
 
-        return request.method in SAFE_METHODS
+
+class LibraryUserPermission(BasePermission):
+
+    def has_object_permission(self, request, view, obj):
+        return bool(request.method in SAFE_METHODS)
 
     def has_permission(self, request, view):
         return bool(
-            ((request.user and request.user.is_authenticated) and
-            (request.method in SAFE_METHODS)) or
-            (request.user and request.user.is_staff)
+            request.user and request.user.is_authenticated and
+            request.method in SAFE_METHODS
         )
+        
+
+class BooksPermission(LibraryUserPermission):
+
+    def has_object_permission(self, request, view, obj):
+        curr_year = datetime.date.today().year
+        if (curr_year - obj.publish_date.date().year == 0) and request.method in SAFE_METHODS:
+                return True
+        return False
