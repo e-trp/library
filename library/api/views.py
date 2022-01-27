@@ -5,21 +5,24 @@ from rest_framework.permissions import IsAdminUser
 from api.permissions import LibraryPermission
 from api.tasks import send_mail_to_subs
 from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.filters import SearchFilter, OrderingFilter
 
 
 
 class AuthorViewSet(ModelViewSet):
-    permission_classes = [LibraryPermission | IsAdminUser]
+    permission_classes = [LibraryPermission]
     queryset = Author.objects.all()
     serializer_class = AuthorSerializer
 
 
 class BookViewSet(ModelViewSet):
-    permission_classes = [LibraryPermission | IsAdminUser]
+    permission_classes = [LibraryPermission]
     queryset = Book.objects.all()
     serializer_class = BookSerializer
-    filter_backends = [DjangoFilterBackend]
+    filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
     filterset_fields = ['name', 'language', 'publish_date']
+    search_fields = ['name', 'language', 'publish_date']
+    order_fields = ['publish_date']
 
     def perform_create(self, serializer):
         super().perform_create(serializer)
@@ -27,6 +30,6 @@ class BookViewSet(ModelViewSet):
 
 
 class SubscriberViewSet(ModelViewSet):
-    permission_classes = [LibraryPermission | IsAdminUser]
+    permission_classes = [LibraryPermission]
     queryset = Subscriber.objects.all()
     serializer_class = SubscriberSerializer
