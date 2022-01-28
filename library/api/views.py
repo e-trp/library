@@ -2,11 +2,11 @@ from rest_framework.viewsets import ModelViewSet
 from rest_framework.views import APIView
 from rest_framework.generics import CreateAPIView
 from rest_framework.filters import SearchFilter, OrderingFilter
-from rest_framework.authtoken.models import Token
-from rest_framework.authtoken.views import ObtainAuthToken
-from rest_framework.permissions import AllowAny
+from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework.response import Response
+from rest_framework import status
 from django_filters.rest_framework import DjangoFilterBackend
-from api.serializers import BookSerializer, AuthorSerializer, SubscriberSerializer, UserRegisterSerializer
+from api.serializers import BookSerializer, AuthorSerializer, SubscriberSerializer, UserSerializer
 from api.models import Author, Book, Subscriber
 from api.permissions import LibraryUserPermission, AdminPermission, BooksPermission
 from api.tasks import send_mail_to_subs
@@ -42,7 +42,14 @@ class SubscriberViewSet(ModelViewSet):
     serializer_class = SubscriberSerializer
 
 
-class UserRegistration(CreateAPIView):
+class UserRegistrationView(CreateAPIView):
     permission_classes = [AllowAny]
     queryset = User.objects.all()
-    serializer_class = UserRegisterSerializer
+    serializer_class = UserSerializer
+
+
+class UserProfileView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, *args, **kwargs):
+        return Response(UserSerializer(request.user).data, status=status.HTTP_200_OK)

@@ -25,10 +25,16 @@ class SubscriberSerializer(ModelSerializer):
         fields = '__all__'
 
 
-class UserRegisterSerializer(ModelSerializer):
+class UserSerializer(ModelSerializer):
     class Meta:
         model = User
         fields = ['username', 'email', 'password']
+        extra_kwargs = {
+            'email': {
+                'required': True,
+                'allow_blank': False
+            }
+        }
 
     def create(self, validated_data):
         user = User(**validated_data)
@@ -42,24 +48,3 @@ class UserRegisterSerializer(ModelSerializer):
             'email': instance.email
         }
         return data
-
-
-class AuthTokenSerializer(Serializer):
-    username = CharField(label="Username")
-    password = CharField(label="Password", style={'input_type': 'password'})
-
-    def validate(self, attrs):
-        username = attrs.get('email')
-        password = attrs.get('password')
-        if username and password:
-            user = authenticate(email=username, password=password)
-            if user:
-                if user.is_deleted:
-                    raise ValidationError('User account is deleted.', code='authorization')
-            else:
-                raise ValidationError('Unable to log in with provided credentials.', code='authorization')
-        else:
-            raise ValidationError('Must include "email" and "password".', code='authorization')
-
-        attrs['user'] = user
-        return attrs
