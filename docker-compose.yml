@@ -35,6 +35,7 @@ services:
       - postgres
 
   celery:
+    restart: always
     build: .
     container_name: 'celery'
     command: celery -A library worker -B
