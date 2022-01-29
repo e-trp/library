@@ -1,4 +1,4 @@
-version: '3'
+version: '3.8'
 services:
     
 
@@ -20,29 +20,35 @@ services:
     restart: always
     image: django-dev
     container_name: django-dev
+    command:  >
+      bash -c "
+        python manage.py migrate &&
+        python manage.py runserver 0.0.0.0:8000
+      "
     build:
       context: .
-      dockerfile: ./compose/django/DockerFile
     volumes:
       - .:/webapp/
     ports:
       - "8000:8000"
     depends_on:
       - postgres
-      - celery
 
   celery:
-    build: 
-      context: .
-    container_name: celery-worker
-    command: celery -A library worker -l info
+    build: .
+    container_name: 'celery'
+    command: celery -A library worker -B
     volumes:
       - .:/webapp/
+    links:
+      - redis
     depends_on:
+      - django
       - redis
 
   redis:
-    container_name:  redis-server
+    restart: always
+    container_name: 'redis-server'
     image: redis
     ports:
     - "6379:6379"
