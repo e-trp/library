@@ -1,0 +1,48 @@
+version: '3'
+services:
+    
+
+  postgres:
+    restart: always
+    image: postgres:14
+    container_name: postgresql14
+    volumes:
+      - ../postgresql-data:/var/lib/postgresql/data
+      - ./postgresql-init:/docker-entrypoint-initdb.d
+    environment:
+      - PGDATA=/var/lib/postgresql/data/14
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=password
+    ports:
+      - "5432:5432"
+
+  django:
+    restart: always
+    image: django-dev
+    container_name: django-dev
+    build:
+      context: .
+      dockerfile: ./compose/django/DockerFile
+    volumes:
+      - .:/webapp/
+    ports:
+      - "8000:8000"
+    depends_on:
+      - postgres
+      - celery
+
+  celery:
+    build: 
+      context: .
+    container_name: celery-worker
+    command: celery -A library worker -l info
+    volumes:
+      - .:/webapp/
+    depends_on:
+      - redis
+
+  redis:
+    container_name:  redis-server
+    image: redis
+    ports:
+    - "6379:6379"
