@@ -22,11 +22,11 @@ class LibraryUserPermission(BasePermission):
             request.method in SAFE_METHODS
         )
         
-
+ 
 class BooksPermission(LibraryUserPermission):
 
     def has_object_permission(self, request, view, obj):
         curr_year = datetime.date.today().year
-        if (curr_year - obj.publish_date.date().year == 0) and request.method in SAFE_METHODS:
+        if (obj.publish_date.date().year - curr_year > 0) and request.method in SAFE_METHODS:
                 return True
         return False
