@@ -45,6 +45,7 @@ class UserSerializer(ModelSerializer):
     
     def to_representation(self, instance):
         data = {
+            'id': instance.id,
             'username': instance.username,
             'email': instance.email
         }
