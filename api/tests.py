@@ -37,19 +37,38 @@ class AppTest(APITestCase):
             last_name ="tes author"
         )
         
-        dt_now = datetime.datetime.now().isoformat()
-        for i in range(2):
-            Book.objects.create(
-                name = 'book' + str(i),
+        dt_now = datetime.datetime.now()
+        dt_str = dt_now.isoformat()
+        test_book = Book.objects.create(
+                name = 'test_book',
                 author = test_author,
                 language = 'ru',
-                publish_date = dt_now 
+                publish_date = dt_str 
             )
-            
+        new_date = dt_now + datetime.timedelta(days=400) 
+        new_book = Book.objects.create(
+            name = 'new_book', 
+            author = test_author,
+            language = 'ru',
+            publish_date = new_date
+        )
+        self.new_book_id = new_book.id
+        self.test_book_id = test_book.id
+
     def test_get_book_list(self):
         self.client.credentials(HTTP_AUTHORIZATION = 'Token ' + self.token)
         response = self.client.get('/api/books/')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    def test_get_book(self):
+        self.client.credentials(HTTP_AUTHORIZATION = 'Token ' + self.token)
+        response = self.client.get('/api/books/{0}/'.format(self.test_book_id))
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    def test_forbidden_new_book(self):
+        self.client.credentials(HTTP_AUTHORIZATION = 'Token ' + self.token)
+        response = self.client.get('/api/books/{0}/'.format(self.new_book_id))
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
 
     def test_get_authors_list(self):
         self.client.credentials(HTTP_AUTHORIZATION = 'Token ' + self.token)
@@ -61,34 +80,3 @@ class AppTest(APITestCase):
         response = self.client.get('/api/subscribers/')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
-
-
-# class RetriveObjectsTest(APITestCase):
-
-#     def setUp(self):
-#         test_author = Author.objects.create(
-#             first_name = "tes author", 
-#             mid_name = "tes author",
-#             last_name ="tes author"
-#         )
-#         dt_now = datetime.datetime.now().isoformat()
-#         for i in range(2):
-#             Book.objects.create(
-#                 name = 'book' + str(i),
-#                 author = test_author,
-#                 language = 'ru',
-#                 publish_date = dt_now 
-#             )
-#         request_data = {
-#             "username": "test_user1",
-#             "password": "S@3cr33t",
-#         }
-#         response = self.client.post(
-#             '/api/auth/', 
-#             request_data, format="json"
-#         )
-#         self.client.credentials(HTTP_AUTHORIZATION = 'Token ' + response.data["token"])
-
-#     def test_book_list(self):
-#         response = self.client.get('/api/books/')
-#         self.assertEqual(response.status_code, status.HTTP_200_OK)
