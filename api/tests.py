@@ -3,6 +3,7 @@ from urllib import request
 from rest_framework.test import APITestCase
 from rest_framework import status
 from api.models import Book, Subscriber, Author
+from django.utils import timezone
 import datetime
 import json
 
@@ -37,7 +38,7 @@ class AppTest(APITestCase):
             last_name ="tes author"
         )
         
-        dt_now = datetime.datetime.now()
+        dt_now = timezone.now()
         dt_str = dt_now.isoformat()
         test_book = Book.objects.create(
                 name = 'test_book',
