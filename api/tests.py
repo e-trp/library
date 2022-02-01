@@ -43,7 +43,7 @@ class AppTest(APITestCase):
                 name = 'test_book',
                 author = test_author,
                 language = 'ru',
-                publish_date = dt_now.isoformat()
+                publish_date = dt_now
             )
         new_date = dt_now + datetime.timedelta(days=400) 
         new_book = Book.objects.create(
