@@ -52,25 +52,47 @@ class AppTest(APITestCase):
             language = 'ru',
             publish_date = new_date
         )
+
         self.new_book_id = new_book.id
         self.test_book_id = test_book.id
+        self.author_id = test_author.id
         self.client.credentials(HTTP_AUTHORIZATION = 'Token ' + self.token)
 
-    def test_get_book_list(self):
+    def test_get_book(self):
         response = self.client.get('/api/books/')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
-    def test_get_book(self):
-        response = self.client.get('/api/books/{0}/'.format(self.test_book_id))
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
+    def test_post_book(self):
+        response = self.client.post('/api/books/', data={}, format="json")
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
 
-    def test_forbidden_new_book(self):
+    def test_put_book(self):
+        response = self.client.put('/api/books/{0}/'.format(self.test_book_id))
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+    
+    def test_delete_book(self):
+        response = self.client.delete('/api/books/{0}/'.format(self.test_book_id))
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+    def test_publish_date_next_year_book(self):
         response = self.client.get('/api/books/{0}/'.format(self.new_book_id))
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
 
     def test_get_authors_list(self):
         response = self.client.get('/api/authors/')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
+    
+    def test_post_author(self):
+        response = self.client.post('/api/authors/', data={}, format="json")
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+    def test_put_author(self):
+        response = self.client.put('/api/authors/{0}/'.format(self.author_id))
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+    
+    def test_delete_author(self):
+        response = self.client.delete('/api/authors/{0}/'.format(self.author_id))
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
 
     def test_subscriber_list(self):
         response = self.client.get('/api/subscribers/')

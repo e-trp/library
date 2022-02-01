@@ -37,7 +37,7 @@ class BookViewSet(ModelViewSet):
 
 
 class SubscriberViewSet(ModelViewSet):
-    permission_classes = [AdminPermission | LibraryUserPermission]
+    permission_classes = [IsAuthenticated]
     queryset = Subscriber.objects.all()
     serializer_class = SubscriberSerializer
 
