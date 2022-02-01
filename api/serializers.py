@@ -44,9 +44,8 @@ class UserSerializer(ModelSerializer):
         return user
     
     def to_representation(self, instance):
-        data = {
+        return {
             'id': instance.id,
             'username': instance.username,
             'email': instance.email
         }
-        return data
