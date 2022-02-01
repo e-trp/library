@@ -55,29 +55,25 @@ class AppTest(APITestCase):
         )
         self.new_book_id = new_book.id
         self.test_book_id = test_book.id
+        self.client.credentials(HTTP_AUTHORIZATION = 'Token ' + self.token)
 
     def test_get_book_list(self):
-        self.client.credentials(HTTP_AUTHORIZATION = 'Token ' + self.token)
         response = self.client.get('/api/books/')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     def test_get_book(self):
-        self.client.credentials(HTTP_AUTHORIZATION = 'Token ' + self.token)
         response = self.client.get('/api/books/{0}/'.format(self.test_book_id))
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     def test_forbidden_new_book(self):
-        self.client.credentials(HTTP_AUTHORIZATION = 'Token ' + self.token)
         response = self.client.get('/api/books/{0}/'.format(self.new_book_id))
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
 
     def test_get_authors_list(self):
-        self.client.credentials(HTTP_AUTHORIZATION = 'Token ' + self.token)
         response = self.client.get('/api/authors/')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     def test_subscriber_list(self):
-        self.client.credentials(HTTP_AUTHORIZATION = 'Token ' + self.token)
         response = self.client.get('/api/subscribers/')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
