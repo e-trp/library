@@ -39,12 +39,11 @@ class AppTest(APITestCase):
         )
         
         dt_now = timezone.now()
-        dt_str = dt_now.isoformat()
         test_book = Book.objects.create(
                 name = 'test_book',
                 author = test_author,
                 language = 'ru',
-                publish_date = dt_str 
+                publish_date = dt_now.isoformat()
             )
         new_date = dt_now + datetime.timedelta(days=400) 
         new_book = Book.objects.create(
