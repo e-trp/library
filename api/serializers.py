@@ -1,5 +1,5 @@
 import email
-from rest_framework.serializers import ModelSerializer, Serializer, CharField, ValidationError, EmailField
+from rest_framework.serializers import ModelSerializer
 from api.models import Author, Book, Subscriber
 from django.contrib.auth import get_user_model
 
