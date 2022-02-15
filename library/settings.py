@@ -167,6 +167,9 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.TokenAuthentication', 
     ],
-}
+     'DEFAULT_RENDERER_CLASSES': [
+        'rest_framework.renderers.JSONRenderer',
+    ]
+}   
 
 FILTERS_DEFAULT_LOOKUP_EXPR = 'icontains'
